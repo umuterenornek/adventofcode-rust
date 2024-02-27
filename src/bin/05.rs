@@ -87,7 +87,7 @@ impl RangeSet {
 }
 
 pub fn part_one(input: &str) -> Option<u64> {
-    fn map_resources(contents: &str) -> (Vec<u64>, Vec<HashMap<u64, (u64, u64)>>){
+    fn map_resources(contents: &str) -> (Vec<u64>, Vec<HashMap<u64, (u64, u64)>>) {
         let mut resource_mappings: Vec<HashMap<u64, (u64, u64)>> = Vec::new();
         let mut seeds: Vec<u64> = Vec::new();
         for (i, line) in contents.lines().enumerate() {
@@ -95,16 +95,22 @@ pub fn part_one(input: &str) -> Option<u64> {
                 continue;
             }
             if i == 0 {
-                for seed in line.split(": ").filter(|s| !s.is_empty()).nth(1).unwrap().split(" ").filter(|s| !s.is_empty()) {
+                for seed in line
+                    .split(": ")
+                    .filter(|s| !s.is_empty())
+                    .nth(1)
+                    .unwrap()
+                    .split(' ')
+                    .filter(|s| !s.is_empty())
+                {
                     seeds.push(seed.parse::<u64>().unwrap());
                 }
             } else if line.chars().next().unwrap().is_numeric() {
-                let mapping_line =
-                    line
-                        .split(" ")
-                        .filter(|s| !s.is_empty())
-                        .map(|s| s.parse::<u64>().unwrap())
-                        .collect::<Vec<u64>>();
+                let mapping_line = line
+                    .split(' ')
+                    .filter(|s| !s.is_empty())
+                    .map(|s| s.parse::<u64>().unwrap())
+                    .collect::<Vec<u64>>();
                 let destination_start = mapping_line[0];
                 let source_start = mapping_line[1];
                 let range = mapping_line[2];
@@ -131,10 +137,8 @@ pub fn part_one(input: &str) -> Option<u64> {
                     break;
                 }
             }
-            if i == resource_mappings.len() - 1 {
-                if key < lowest_location_num {
-                    lowest_location_num = key;
-                }
+            if i == resource_mappings.len() - 1 && key < lowest_location_num {
+                lowest_location_num = key;
             }
         }
     }
@@ -171,7 +175,7 @@ pub fn part_two(input: &str) -> Option<i64> {
         }
         if line.chars().next().unwrap().is_numeric() {
             let mapping_line = line
-                .split(" ")
+                .split(' ')
                 .filter(|s| !s.is_empty())
                 .map(|s| s.parse::<i64>().unwrap())
                 .collect::<Vec<i64>>();
