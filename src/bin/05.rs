@@ -20,14 +20,13 @@ impl RangeSet {
             (true, false) => self.ranges = other.ranges,
             (false, true) => (),
             _ => {
-                let mut new_ranges = self.ranges.clone();
-                new_ranges.extend(other.ranges);
-                new_ranges.sort_by(|a, b| a.start.cmp(&b.start));
+                self.ranges.extend(other.ranges);
+                self.ranges.sort_by(|a, b| a.start.cmp(&b.start));
 
                 let mut result = Vec::new();
-                let mut current = new_ranges[0].clone();
+                let mut current = self.ranges[0].clone();
 
-                for range in new_ranges[1..].iter() {
+                for range in self.ranges[1..].iter() {
                     if current.end < range.start {
                         result.push(current);
                         current = range.clone();
