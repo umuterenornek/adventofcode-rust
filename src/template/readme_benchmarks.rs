@@ -8,6 +8,7 @@ use crate::template::Day;
 static MARKER: &str = "<!--- benchmarking table --->";
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum Error {
     Parser(String),
     IO(io::Error),
