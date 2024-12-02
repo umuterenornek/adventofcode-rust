@@ -47,6 +47,7 @@ pub fn run_multi(days_to_run: &HashSet<Day>, is_release: bool, is_timed: bool) -
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum Error {
     BrokenPipe,
     IO(io::Error),
