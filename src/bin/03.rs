@@ -21,10 +21,7 @@ pub fn part_one(input: &str) -> Option<u32> {
         .map(|line| format!(".{line}."))
         .collect();
     // add a line of dots to the top and bottom
-    let mut top_bottom = String::new();
-    for _ in 0..lines[0].len() {
-        top_bottom.push('.');
-    }
+    let top_bottom = ".".repeat(lines[0].len());
     lines.insert(0, top_bottom.clone());
     lines.push(top_bottom);
 
@@ -38,22 +35,26 @@ pub fn part_one(input: &str) -> Option<u32> {
                     num = num * 10 + c.to_digit(10).unwrap();
                 } else {
                     num = c.to_digit(10).unwrap();
+                    is_parsing_number = true;
                 }
-                is_parsing_number = true;
                 for l in &lines[i-1..i+2] {
                     for k in l[j-1..j+2].chars() {
                         if k != '.' && !k.is_numeric() {
                             is_part_number = true;
+                            break;
                         }
                     }
+                    if is_part_number {
+                        break;
+                    }
                 }
-            } else {
-                if is_parsing_number && is_part_number {
-                    part_numbers.push(num);
-                }
-                is_parsing_number = false;
-                is_part_number = false;
+                continue;
             }
+            if is_parsing_number && is_part_number {
+                part_numbers.push(num);
+            }
+            is_parsing_number = false;
+            is_part_number = false;
         }
     }
     Some(part_numbers.iter().sum::<u32>())
@@ -79,10 +80,7 @@ pub fn part_two(input: &str) -> Option<u32> {
         .map(|line| format!(".{line}."))
         .collect();
     // add a line of dots to the top and bottom
-    let mut top_bottom = String::new();
-    for _ in 0..lines[0].len() {
-        top_bottom.push('.');
-    }
+    let top_bottom = ".".repeat(lines[0].len());
     lines.insert(0, top_bottom.clone());
     lines.push(top_bottom);
 
@@ -98,27 +96,31 @@ pub fn part_two(input: &str) -> Option<u32> {
                     num = num * 10 + c.to_digit(10).unwrap();
                 } else {
                     num = c.to_digit(10).unwrap();
+                    is_parsing_number = true;
                 }
-                is_parsing_number = true;
                 for (n, l) in lines[i-1..i+2].iter().enumerate() {
                     for (m, k) in l[j-1..j+2].chars().enumerate() {
                         if k == '*' {
                             is_part_number = true;
                             // calculate index of * in lines
                             gear_index = (i-1+n, j-1+m);
+                            break;
                         }
                     }
+                    if is_part_number {
+                        break;
+                    }
                 }
-            } else {
-                if is_parsing_number && is_part_number {
-                    gear_map
-                        .entry(gear_index)
-                        .or_insert(Vec::new())
-                        .push(num);
-                }
-                is_parsing_number = false;
-                is_part_number = false;
+                continue;
             }
+            if is_parsing_number && is_part_number {
+                gear_map
+                    .entry(gear_index)
+                    .or_insert(Vec::new())
+                    .push(num);
+            }
+            is_parsing_number = false;
+            is_part_number = false;
         }
     }
 
